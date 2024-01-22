@@ -12,7 +12,9 @@ const App = () => {
     "The only way to go fast, is to go well.",
   ];
 
-  const [selected, setSelected] = useState(0);
+  const [selected, setSelected] = useState(
+    Math.floor(Math.random() * anecdotes.length)
+  );
   const [votes, setVotes] = useState(new Array(anecdotes.length).fill(0));
 
   const generateRandomNumber = () => {
@@ -27,12 +29,29 @@ const App = () => {
     setVotes(newVotes);
   };
 
+  const anecdotesWithLargestVotes = () => {
+    let largestVotesIndex = 0;
+    for (let i = 1; i < votes.length; i++) {
+      if (votes[i] > votes[largestVotesIndex]) {
+        largestVotesIndex = i;
+      }
+    }
+    return largestVotesIndex;
+  };
+
+  const largestVotesIndex = anecdotesWithLargestVotes(votes);
+
   return (
     <>
+      <h2>Anecdote of the day</h2>
       <div>{anecdotes[selected]}</div>
       <div>has {votes[selected]} votes</div>
       <button onClick={handleVote}>votes</button>
       <button onClick={generateRandomNumber}>next anecdotes</button>
+
+      <h2>Anecdote with most votes</h2>
+      <div>{anecdotes[largestVotesIndex]}</div>
+      <div>has {votes[largestVotesIndex]} votes</div>
     </>
   );
 };
